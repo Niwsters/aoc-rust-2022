@@ -128,5 +128,5 @@ pub fn test() {
     assert_eq!(part1(input::TEST), 15);
     assert_eq!(part1(input::REAL), 13446);
     assert_eq!(part2(input::TEST), 12);
-    assert_eq!(part2(input::REAL), 12);
+    assert_eq!(part2(input::REAL), 13509);
 }
