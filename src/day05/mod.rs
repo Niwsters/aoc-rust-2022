@@ -59,12 +59,30 @@ fn instructions(procedure_str: &str) -> Vec<Instruction> {
         .collect()
 }
 
-fn apply(stacks: Vec<Stack>, instructions: Vec<Instruction>) -> Vec<Stack> {
+fn apply_9000(stacks: Vec<Stack>, instructions: Vec<Instruction>) -> Vec<Stack> {
     let mut stacks = stacks.clone();
 
     for instruction in instructions {
         for _ in 0..instruction.amount {
             let a_crate = stacks[instruction.from - 1].pop_back().unwrap();
+            stacks[instruction.to - 1].push_back(a_crate);
+        }
+    }
+
+    stacks
+}
+
+fn apply_9001(stacks: Vec<Stack>, instructions: Vec<Instruction>) -> Vec<Stack> {
+    let mut stacks = stacks.clone();
+
+    for instruction in instructions {
+        let mut crates_to_move = VecDeque::new();
+        for _ in 0..instruction.amount {
+            let a_crate = stacks[instruction.from - 1].pop_back().unwrap();
+            crates_to_move.push_front(a_crate);
+        }
+        
+        for a_crate in crates_to_move {
             stacks[instruction.to - 1].push_back(a_crate);
         }
     }
@@ -84,7 +102,17 @@ fn part1(input: &str) -> String {
 
     let stacks = stacks(stacks_str);
     let instructions = instructions(procedure);
-    let stacks = apply(stacks, instructions);
+    let stacks = apply_9000(stacks, instructions);
+
+    top_crates(stacks)
+}
+
+fn part2(input: &str) -> String {
+    let (stacks_str, procedure) = input.split_once("\n\n").unwrap();
+
+    let stacks = stacks(stacks_str);
+    let instructions = instructions(procedure);
+    let stacks = apply_9001(stacks, instructions);
 
     top_crates(stacks)
 }
@@ -92,4 +120,6 @@ fn part1(input: &str) -> String {
 pub fn test() {
     assert_eq!(part1(input::TEST), "CMZ");
     assert_eq!(part1(input::REAL), "VPCDMSLWJ");
+    assert_eq!(part2(input::TEST), "MCD");
+    assert_eq!(part2(input::REAL), "TPWCGNCCG");
 }
