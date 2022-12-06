@@ -54,5 +54,5 @@ pub fn test() {
     assert_eq!(part1(input::TEST), 7);
     assert_eq!(part1(input::REAL), 1647);
     assert_eq!(part2(input::TEST), 19);
-    assert_eq!(part2(input::REAL), 0);
+    assert_eq!(part2(input::REAL), 2447);
 }
