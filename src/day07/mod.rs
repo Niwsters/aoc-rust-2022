@@ -55,7 +55,7 @@ fn dir_size(directories: &Directories, path: &String) -> usize {
         .sum()
 }
 
-fn part1(input: &str) -> usize {
+fn walk(input: &str) -> Directories {
     let lines = input.split('\n');
 
     let mut directories: Directories = HashMap::new();
@@ -82,6 +82,12 @@ fn part1(input: &str) -> usize {
         }
     }
 
+    return directories;
+}
+
+fn part1(input: &str) -> usize {
+    let directories = walk(input);
+
     let total_size: usize = directories
         .keys()
         .map(|path| dir_size(&directories, &path))
@@ -91,7 +97,32 @@ fn part1(input: &str) -> usize {
     total_size
 }
 
+fn part2(input: &str) -> usize {
+    let total_disk_space = 70000000;
+    let required_space = 30000000;
+
+    let directories = walk(input);
+
+    let used_space = dir_size(&directories, &"/".to_string());
+
+    let sizes = directories
+        .keys()
+        .map(|path| dir_size(&directories, &path));
+
+    let unused_space = total_disk_space - used_space;
+
+    let mut result: Vec<usize> = sizes
+        .filter(|size| (size + unused_space) > required_space)
+        .collect();
+
+    result.sort();
+    
+    result[0]
+}
+
 pub fn test() {
     assert_eq!(part1(input::TEST), 95437);
-    assert_eq!(part1(input::REAL), 0);
+    assert_eq!(part1(input::REAL), 1581595);
+    assert_eq!(part2(input::TEST), 24933642);
+    assert_eq!(part2(input::REAL), 1544176);
 }
