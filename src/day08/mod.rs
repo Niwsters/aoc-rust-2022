@@ -1,7 +1,6 @@
 mod input;
 
 use std::collections::HashMap;
-use std::time::{Duration, Instant};
 
 type Tree = char;
 type Trees = HashMap<String, Tree>;
@@ -102,25 +101,10 @@ fn part1(input: &str) -> usize {
     let max_x = max_x(&trees);
     let max_y = max_y(&trees);
 
-    let total = trees.len();
-    let mut done = 0;
-    let mut visible_count = 0;
-    for (coord, tree) in &trees {
-        let start = Instant::now();
-        if is_visible_from_edge(&trees, &coord, &tree, &max_x, &max_y) {
-            visible_count += 1;
-        }
-        done += 1;
-        //println!("{}/{} --- {:?}", done, total, start.elapsed());
-    }
-
-    visible_count
-    /*
     trees
         .iter()
-        .filter(|(coord, tree)| is_visible_from_edge(&trees, coord, tree))
+        .filter(|(coord, tree)| is_visible_from_edge(&trees, coord, tree, &max_x, &max_y))
         .count()
-        */
 }
 
 pub fn test() {
